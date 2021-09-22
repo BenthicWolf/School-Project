@@ -8,12 +8,12 @@ def UserAuth():
 
     if f"{Uname} : {Upass}" in Valid_Users.read():
         print("\nSuccessfuly authorised user account\n\n")
-        return "Succeeded"
+        Valid_Users.close()
+        return True
     else:
         print("\nFailure to authorise user account\n\n")
-        return "Failed"
-
-    Valid_Users.close()
+        Valid_Users.close()
+        return False
 
 
 def Deal_Cards():

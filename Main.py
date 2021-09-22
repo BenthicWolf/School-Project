@@ -5,10 +5,11 @@ from functions import *
 
 def Main():
 
-    if UserAuth() == "Succeeded":
+    result = UserAuth()
+    if result == True:
         pass
     else:
-        Main()
+        UserAuth()
 
 
 print("\n\nYou are playing: Blackjack (21)\n")
