@@ -1,3 +1,5 @@
+from random import randint
+
 
 def UserAuth():
     print("Please login to an authorised user account.\n")
@@ -16,8 +18,10 @@ def UserAuth():
         return False
 
 
-def Deal_Cards():
-    pass
+def Deal_Cards(Player):
+    Player.Card1 = randint(1, 52)
+    Player.Card2 = randint(1, 52)
+    return
 
 
 def Choice():
