@@ -25,7 +25,10 @@ def Deal_Cards(Player):
 
 
 def Choice():
-    pass
+    print("Do you want add a bet, hit, or stand?")
+    decision = (str(input("Please input one of the options: "))).lower()
+
+    switch(decision){}
 
 
 def Get_Card():

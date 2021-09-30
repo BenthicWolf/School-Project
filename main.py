@@ -10,8 +10,8 @@ def Main():
         UserAuth()
 
     Deal_Cards(player)
-    print(player.Card1)
-    print(player.Card2)
+    
+    
 
 
 
