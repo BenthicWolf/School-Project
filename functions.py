@@ -1,3 +1,5 @@
+from random import randint
+
 
 def UserAuth():
     print("Please login to an authorised user account.\n")
@@ -16,12 +18,23 @@ def UserAuth():
         return False
 
 
-def Deal_Cards():
-    pass
+def Deal_Cards(player):
+    player.Card1 = randint(1, 52)
+    player.Card2 = randint(1, 52)
 
 
 def Choice():
-    pass
+    print("Do you want to place a bet, hit, or stand?")
+    decision = str(input("Please enter one of the options: ")).lower()
+    if decision == "bet":
+        pass
+    elif decision == "bet":
+        pass
+    elif decision == "bet":
+        pass
+    else:
+        print("That isnt an option, please check your spelling\n")
+        return False
 
 
 def Get_Card():
