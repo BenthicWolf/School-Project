@@ -1,35 +1,35 @@
-from functions import UserAuth, Deal_Cards, Choice, convert
+from functions import dealer_turn, userauth, Deal_Cards, Choice, convert, is_over
 
 
-def Main():
+def main():
 
-    while not UserAuth(): pass
+    while not userauth():
+        pass
 
-    player = Player()
-    dealer = Dealer()
+    player = Person()
+    dealer = Person()
 
     Deal_Cards(player)
     Deal_Cards(dealer)
 
-    print(f"Your cards are the {convert(player.Cards[0])}, {convert(player.Cards[1])}.\nThe dealer's faceup card is {convert(dealer.Cards[0])}")
+    print(
+        f"""Your cards are the {convert(player.Cards[0])}, and the {convert(player.Cards[1])}.
+The dealer's faceup card is the {convert(dealer.Cards[0])}""")
 
-    while not Choice(player): pass
-    
+    while not Choice(player):
+        if is_over(player) == True:
+            print("You're over!")
+        else:
+            print("You're not over!")
+
+    dealer_turn(dealer)
 
 
-class Player:
+class Person:
     def __init__(self):
         self.Cards = []
-
-
-class Dealer:
-    def __init__(self):
-        self.Cards = []
-
-
 
 
 print("\n\nYou are playing: Blackjack (21)\n")
-print(".\n" * 2)
 
-Main()
+main()
