@@ -1,47 +1,32 @@
-
-from random import choice
-from functions import *
-from Converter import convert
+from functions import UserAuth, Deal_Cards, Choice, convert
 
 
 def Main():
 
-    while True:
-        if UserAuth() == False:
-            pass
-        else:
-            break
+    while not UserAuth(): pass
 
-    Deal_Cards(Player)
-    Deal_Cards(Dealer)
+    player = Player()
+    dealer = Dealer()
 
-    print(f"Your cards are the {convert(Player.Card1)}")
+    Deal_Cards(player)
+    Deal_Cards(dealer)
 
-    while True:
-        if Choice() == False:
-            pass
-        else:
-            break
+    print(f"Your cards are the {convert(player.Cards[0])}, {convert(player.Cards[1])}.\nThe dealer's faceup card is {convert(dealer.Cards[0])}")
+
+    while not Choice(player): pass
+    
 
 
 class Player:
-    def __init__(self, Card1, Card2):
-        Card1 = 0
-        Card2 = 0
+    def __init__(self):
+        self.Cards = []
 
 
 class Dealer:
-    def __init__(self, Card1, Card2):
-        Card1 = 0
-        Card2 = 0
-
-    Deal_Cards(player)
+    def __init__(self):
+        self.Cards = []
 
 
-class player():
-    def __init__(self, Card1, Card2):
-        self.Card1 = 0
-        self.Card2 = 0
 
 
 print("\n\nYou are playing: Blackjack (21)\n")

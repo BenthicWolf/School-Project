@@ -1,8 +1,4 @@
 
-def convert(card):
-    return Card_Table[card]
-
-
 Card_Table = {
     1: "Ace of Clubs",
     2: "2 of Clubs",
@@ -57,3 +53,5 @@ Card_Table = {
     51: "Queen of Hearts",
     52: "King of Hearts"
 }
+
+
