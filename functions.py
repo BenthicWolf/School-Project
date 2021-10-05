@@ -1,4 +1,5 @@
 from random import randint
+from Converter import Card_Table
 
 
 def UserAuth():
@@ -19,26 +20,28 @@ def UserAuth():
 
 
 def Deal_Cards(player):
-    player.Card1 = randint(1, 52)
-    player.Card2 = randint(1, 52)
+    player.Cards.append(randint(1, 52))
+    player.Cards.append(randint(1, 52))
 
 
-def Choice():
-    print("Do you want to place a bet, hit, or stand?")
+def Choice(player):
+    print("\nDo you want to place a bet, hit, or stand?")
     decision = str(input("Please enter one of the options: ")).lower()
     if decision == "bet":
         pass
-    elif decision == "bet":
-        pass
-    elif decision == "bet":
-        pass
+    elif decision == "hit":
+        Get_Card(player)
+        
+    elif decision == "stand":
+        return True
     else:
         print("That isnt an option, please check your spelling\n")
         return False
 
 
-def Get_Card():
-    pass
+def Get_Card(player):
+    player.Cards.append(randint(1,52))
+    print(f"Your new card is: {convert(player.Cards[-1])}")
 
 
 def Dealer_Turn():
@@ -46,4 +49,11 @@ def Dealer_Turn():
 
 
 def Settle():
+    pass
+
+def convert(card):
+    
+    return Card_Table[card]
+
+def is_over:
     pass
