@@ -1,5 +1,4 @@
 from random import randint
-from Converter import Card_Table
 
 
 def userauth():
@@ -29,9 +28,17 @@ def Choice(player):
     decision = str(input("Please enter one of the options: ")).lower()
 
     if decision == "bet":
-        return False
+        bet = int(input(f"How much would you like to bet, your current balance is {player.balance}: "))
+        
+        if bet > player.balance:
+            print("That is not a valid bet")
+        else:
+            player.balance -= bet
+            print(f"Bet of {bet} added, an equal amount has been removed from your balance")
+
     elif decision == "hit":
         Get_Card(player)
+        print(f"\nYour new card is: {convert(player.Cards[-1])}")
 
     elif decision == "stand":
         return True
@@ -42,16 +49,52 @@ def Choice(player):
 
 def Get_Card(player):
     player.Cards.append(randint(1, 52))
-    print(f"\nYour new card is: {convert(player.Cards[-1])}")
-
+    
 
 def dealer_turn(dealer):
-    pass
+    
+    print(f"\nThe dealer reveals their facedown card: {convert(dealer.Cards[1])}")
+    
+    while True:
+        total = 0
+
+        for card in dealer.Cards:
+            card -= ((card-1)//13)*13
+            total += card + 1
+    
+        print(f"The dealers current total is: {total}")
+
+        if total > 21:
+            print("The dealer is bust")
+
+        elif total >= 17:
+            break
+
+        else:
+            Get_Card(dealer)
+            print(f"\nThe dealer takes a card, their new card is:   {convert(dealer.Cards[-1])}")
+            print()
+
+        
 
 
-def settle():
-    pass
 
+def settle(player, dealer):
+    ptotal = 0
+    dtotal = 0
+
+    for card in player.Cards:
+        ptotal += int(card - ((card-1)//13)*13)
+
+    for card in player.Cards:
+        dtotal += int(card - ((card-1)//13)*13)
+
+    if ptotal > dtotal:
+        pass
+    elif ptotal == dtotal:
+        pass
+    else:
+        pass
 
 def convert(card):
     card -= 1
@@ -77,7 +120,7 @@ def is_over(player):
     for card in player.Cards:
         total += int(card - ((card-1)//13)*13)
 
-    print(f"Your new total is: {total}")
+    print(f"Your current total is: {total}")
 
     if total > 21:
         return True
