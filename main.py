@@ -4,11 +4,11 @@ from functions import dealer_turn, userauth, Deal_Cards, Choice, convert, is_ove
 
 def main():
 
-    while not userauth():
-        pass
-
     player = Person()
     dealer = Person()
+
+    while not userauth(player):
+        pass
 
     Deal_Cards(player)
     Deal_Cards(dealer)
@@ -33,8 +33,10 @@ class Person:
         self.Cards = []
         self.bet = 0
         self.balance = 100
+        self.name = ""
 
 
 print("\n\nYou are playing: Blackjack (21)\n")
 
 main()
+
