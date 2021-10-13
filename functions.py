@@ -1,7 +1,7 @@
 from random import randint
 
 
-def userauth():
+def userauth(player):
     print("Please login to an authorised user account.\n")
     Uname = str(input("Input a valid username here: "))
     Upass = str(input("Input a valid password here: "))
@@ -11,6 +11,7 @@ def userauth():
     if f"{Uname} : {Upass}" in Valid_Users.read():
         print("\nSuccessfuly authorised user account\n\n")
         Valid_Users.close()
+        player.name = Uname
         return True
     else:
         print("\nFailure to authorise user account\n\n")
@@ -90,7 +91,14 @@ def settle(player, dealer):
         dtotal += int(card - ((card-1)//13)*13)
 
     if ptotal > dtotal:
-        pass
+        print("Congratulations, you win!")
+        
+        File = open("Score.txt", "r+")
+        score = File.read().split(f"{player.name} : ")[1].split('\n')[0]
+        File.close() 
+
+        
+
     elif ptotal == dtotal:
         pass
     else:
