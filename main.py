@@ -1,4 +1,3 @@
-import sys
 from functions import dealer_turn, userauth, Deal_Cards, Choice, convert, is_over, settle
 
 
@@ -18,13 +17,14 @@ def main():
 The dealer's faceup card is the {convert(dealer.Cards[0])}""")
 
     bet = int(input("Enter a bet amount: "))
-    player.bet = bet
-    
+
     if bet > player.balance:
         print("That is not a valid bet")
     else:
+        player.bet = bet
         player.balance -= bet
-        print(f"Bet of {bet} added, an equal amount has been removed from your balance")
+        print(
+            f"Bet of {bet} added, an equal amount has been removed from your balance")
 
     while not Choice(player):
         if is_over(player) == True:
@@ -35,8 +35,9 @@ The dealer's faceup card is the {convert(dealer.Cards[0])}""")
 
     if dealer_turn(dealer) == False:
         return False
-    
+
     settle(player, dealer)
+
 
 class Person:
     def __init__(self):
@@ -50,4 +51,3 @@ print("\n\nYou are playing: Blackjack (21)\n")
 
 while not main():
     print("\n\nNew Game Launched\n\n")
-
