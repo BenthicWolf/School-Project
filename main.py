@@ -17,14 +17,24 @@ def main():
         f"""Your cards are the {convert(player.Cards[0])}, and the {convert(player.Cards[1])}.
 The dealer's faceup card is the {convert(dealer.Cards[0])}""")
 
+    bet = int(input("Enter a bet amount: "))
+    player.bet = bet
+    
+    if bet > player.balance:
+        print("That is not a valid bet")
+    else:
+        player.balance -= bet
+        print(f"Bet of {bet} added, an equal amount has been removed from your balance")
+
     while not Choice(player):
         if is_over(player) == True:
             print("You're over!")
-            sys.exit()
+            return False
         else:
             print("You're not over!")
 
-    dealer_turn(dealer)
+    if dealer_turn(dealer) == False:
+        return False
     
     settle(player, dealer)
 
@@ -38,5 +48,6 @@ class Person:
 
 print("\n\nYou are playing: Blackjack (21)\n")
 
-main()
+while not main():
+    print("\n\nNew Game Launched\n\n")
 
