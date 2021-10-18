@@ -23,8 +23,9 @@ def Deal_Cards(player):
     player.Cards.append(randint(1, 52))
     player.Cards.append(randint(1, 52))
 
+
 def Choice(player):
-    
+
     print("\nDo you want to hit or stand?")
     decision = str(input("Please enter one of the options: ")).lower()
 
@@ -41,36 +42,38 @@ def Choice(player):
 
 def Get_Card(player):
     player.Cards.append(randint(1, 52))
-    
+
 
 def dealer_turn(dealer):
-    
-    print(f"\nThe dealer reveals their facedown card: {convert(dealer.Cards[1])}")
-    
+
+    print(
+        f"\nThe dealer reveals their facedown card: {convert(dealer.Cards[1])}")
+
     while True:
         total = 0
 
         for card in dealer.Cards:
             card -= ((card-1)//13)*13
             total += card
-    
+
         print(f"The dealers current total is: {total}")
 
         if total > 21:
             print("The dealer is bust")
             return False
-            
 
         elif total >= 17:
             break
 
         else:
             Get_Card(dealer)
-            print(f"\nThe dealer takes a card, their new card is:   {convert(dealer.Cards[-1])}")
+            print(
+                f"\nThe dealer takes a card, their new card is:   {convert(dealer.Cards[-1])}")
             print()
-    
+
     return True
-    
+
+
 def settle(player, dealer):
     ptotal = 0
     dtotal = 0
@@ -81,28 +84,28 @@ def settle(player, dealer):
             card = 10
         ptotal += card
 
-
     for card in dealer.Cards:
         card -= ((card-1)//13)*13
         if card > 10:
             card = 10
         dtotal += card
 
-
     if ptotal > dtotal:
         print("Congratulations, you win!")
-        
+
         File = open("Score.txt", "r+")
         score = File.read().split(f"{player.name} : ")[1].split('\n')[0]
-        File.close() 
+        File.close()
 
         player.balance += (player.bet)*2
 
         if score < player.balance:
-            print(f"Your bet has been doubled! Your current balance is : {player.balance}, this beats highest score for this user, which is: {score}! Keep playing if you want to further this record!")
+            print(
+                f"Your bet has been doubled! Your current balance is : {player.balance}, this beats highest score for this user, which is: {score}! Keep playing if you want to further this record!")
 
         elif score >= player.balance:
-            print(f"Your bet has been doubled! Your current balance is : {player.balance}, however the highest score for this user is: {score}! Keep playing to try to beat this score!")
+            print(
+                f"Your bet has been doubled! Your current balance is : {player.balance}, however the highest score for this user is: {score}! Keep playing to try to beat this score!")
 
     elif ptotal == dtotal:
         player.balance += player.bet
@@ -111,7 +114,9 @@ def settle(player, dealer):
 
     else:
         print("You lose!")
-        print(f"Your balance hasn't been returned, your current balance is: {player.balance}")
+        print(
+            f"Your balance hasn't been returned, your current balance is: {player.balance}")
+
 
 def convert(card):
     card -= 1

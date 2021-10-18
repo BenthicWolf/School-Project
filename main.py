@@ -1,10 +1,19 @@
 from functions import dealer_turn, userauth, Deal_Cards, Choice, convert, is_over, settle
 
 
-def main():
+class Person:
+    def __init__(self):
+        self.Cards = []
+        self.bet = 0
+        self.balance = 100
+        self.name = ""
 
-    player = Person()
-    dealer = Person()
+    def discard_hand(self):
+        self.Cards = []
+        print(self.Cards)
+
+
+def main():
 
     while not userauth(player):
         pass
@@ -39,15 +48,13 @@ The dealer's faceup card is the {convert(dealer.Cards[0])}""")
     settle(player, dealer)
 
 
-class Person:
-    def __init__(self):
-        self.Cards = []
-        self.bet = 0
-        self.balance = 100
-        self.name = ""
+player = Person()
+dealer = Person()
 
 
 print("\n\nYou are playing: Blackjack (21)\n")
 
 while not main():
     print("\n\nNew Game Launched\n\n")
+    player.discard_hand()
+    dealer.discard_hand()
