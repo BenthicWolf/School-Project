@@ -1,4 +1,4 @@
-from functions import dealer_turn, userauth, Deal_Cards, Choice, convert, is_over, settle
+from functions import dealer_turn, userauth, Deal_Cards, Choice, convert, settle
 
 
 class Person:
@@ -10,10 +10,29 @@ class Person:
 
     def discard_hand(self):
         self.Cards = []
-        print(self.Cards)
+    
+    def is_over(self):
+        print(f"Your current total is: {self.total()}")
+
+        if self.total() > 21:
+            return True
+        else:
+           return False
+    
+    def total(self):
+        total = 0
+        for card in self.Cards:
+            card -= ((card-1)//13)*13
+            if card > 10:
+                card = 10
+            total += card
+        print(total)
+        return total
 
 
 def main():
+
+    print(player.balance)
 
     while not userauth(player):
         pass
@@ -25,27 +44,24 @@ def main():
         f"""Your cards are the {convert(player.Cards[0])}, and the {convert(player.Cards[1])}.
 The dealer's faceup card is the {convert(dealer.Cards[0])}""")
 
-    bet = int(input("Enter a bet amount: "))
+    while True:
+        bet = int(input("Enter a bet amount: "))
 
-    if bet > player.balance:
-        print("That is not a valid bet")
-    else:
-        player.bet = bet
-        player.balance -= bet
-        print(
-            f"Bet of {bet} added, an equal amount has been removed from your balance")
-
-    while not Choice(player):
-        if is_over(player) == True:
-            print("You're over!")
-            return False
+        if bet > player.balance:
+            print("That is not a valid bet amount\n")
         else:
-            print("You're not over!")
+            player.bet = bet
+            player.balance -= bet
+            print(
+                f"Bet of {bet} added, an equal amount has been removed from your balance")
+            break
 
-    if dealer_turn(dealer) == False:
-        return False
+    pOver = not Choice(player)
+    if not pOver:
+        dOver = not dealer_turn(dealer)
 
-    settle(player, dealer)
+    settle(player, dealer, pOver, dOver)
+
 
 
 player = Person()
