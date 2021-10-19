@@ -23,22 +23,26 @@ def Deal_Cards(player):
     player.Cards.append(randint(1, 52))
     player.Cards.append(randint(1, 52))
 
+# True means player stuck, False means player went over
+def Choice(player): 
+    while True:
+        print("\nDo you want to hit or stand?")
+        decision = str(input("Please enter one of the options: ")).lower()
 
-def Choice(player):
-
-    print("\nDo you want to hit or stand?")
-    decision = str(input("Please enter one of the options: ")).lower()
-
-    if decision == "hit":
-        Get_Card(player)
-        print(f"\nYour new card is: {convert(player.Cards[-1])}")
-
-    elif decision == "stand":
-        return True
-    else:
-        print("That isnt an option, please check your spelling\n")
-        return False
-
+        if decision == "hit":
+            Get_Card(player)
+            print(f"\nYour new card is: {convert(player.Cards[-1])}")
+            if player.total() > 21:
+                print("You're over!")
+                return False
+            else:
+                print("You're not over!")
+        elif decision == "stand":
+            break
+        else:
+            print("That isnt an option, please check your spelling\n")
+            continue
+    return True
 
 def Get_Card(player):
     player.Cards.append(randint(1, 52))
@@ -50,11 +54,7 @@ def dealer_turn(dealer):
         f"\nThe dealer reveals their facedown card: {convert(dealer.Cards[1])}")
 
     while True:
-        total = 0
-
-        for card in dealer.Cards:
-            card -= ((card-1)//13)*13
-            total += card
+        total = dealer.total()
 
         print(f"The dealers current total is: {total}")
 
@@ -68,33 +68,21 @@ def dealer_turn(dealer):
         else:
             Get_Card(dealer)
             print(
-                f"\nThe dealer takes a card, their new card is:   {convert(dealer.Cards[-1])}")
+                f"\nThe dealer takes a card, their new card is the: {convert(dealer.Cards[-1])}")
             print()
 
     return True
 
 
-def settle(player, dealer):
-    ptotal = 0
-    dtotal = 0
+def settle(player, dealer, pOver, dOver):
+    ptotal = player.total()
+    dtotal = dealer.total()
 
-    for card in player.Cards:
-        card -= ((card-1)//13)*13
-        if card > 10:
-            card = 10
-        ptotal += card
-
-    for card in dealer.Cards:
-        card -= ((card-1)//13)*13
-        if card > 10:
-            card = 10
-        dtotal += card
-
-    if ptotal > dtotal:
+    if (dOver or ptotal > dtotal) and not pOver:
         print("Congratulations, you win!")
 
         File = open("Score.txt", "r+")
-        score = File.read().split(f"{player.name} : ")[1].split('\n')[0]
+        score = int(File.read().split(f"{player.name} : ")[1].split('\n')[0]) # witchcraft
         File.close()
 
         player.balance += (player.bet)*2
@@ -107,15 +95,17 @@ def settle(player, dealer):
             print(
                 f"Your bet has been doubled! Your current balance is : {player.balance}, however the highest score for this user is: {score}! Keep playing to try to beat this score!")
 
-    elif ptotal == dtotal:
+    elif (not dOver and pOver) or dtotal > ptotal:
+        print("You lose!")
+        print(
+            f"Your balance hasn't been returned, your current balance is: {player.balance}")            
+
+    else:
         player.balance += player.bet
         print(f"""You have the same total as the dealer, so you draw. Your bet has been returned,
         your current balance is:{player.balance}""")
 
-    else:
-        print("You lose!")
-        print(
-            f"Your balance hasn't been returned, your current balance is: {player.balance}")
+
 
 
 def convert(card):
@@ -142,19 +132,3 @@ def convert(card):
     return str(card)+" of "+suit
 
 
-def is_over(player):
-    total = 0
-
-    for card in player.Cards:
-        card -= ((card-1)//13)*13
-        if card > 10:
-            card = 10
-        total += card
-
-    print(f"Your current total is: {total}")
-
-    if total > 21:
-        return True
-    else:
-
-        return False
