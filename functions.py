@@ -1,7 +1,10 @@
+import json
 from random import randint
 
 
 def userauth(player):
+    global Uname
+    global Upass
     print("Please login to an authorised user account.\n")
     Uname = str(input("Input a valid username here: "))
     Upass = str(input("Input a valid password here: "))
@@ -81,19 +84,26 @@ def settle(player, dealer, pOver, dOver):
     if (dOver or ptotal > dtotal) and not pOver:
         print("Congratulations, you win!")
 
-        File = open("Score.txt", "r+")
-        score = int(File.read().split(f"{player.name} : ")[1].split('\n')[0]) # witchcraft
-        File.close()
+        File = open("Score.json", "r")
+        scores = json.load(File)
+        score = scores[Uname]
+        print(score)
+        #int(File.read().split(f"{player.name} : ")[1].split('\n')[0]) # witchcraft
 
         player.balance += (player.bet)*2
+        scores[Uname] = player.balance
+        print(player.balance)
+        file = open("player_data.json", "w")
+        json.dump(player_data, file)
+        file.close()File.close()
 
         if score < player.balance:
             print(
-                f"Your bet has been doubled! Your current balance is : {player.balance}, this beats highest score for this user, which is: {score}! Keep playing if you want to further this record!")
+                f"Your bet has been doubled! Your current balance is: {player.balance}, this beats highest score for this user, which is: {score}! Keep playing if you want to further this record!")
 
         elif score >= player.balance:
             print(
-                f"Your bet has been doubled! Your current balance is : {player.balance}, however the highest score for this user is: {score}! Keep playing to try to beat this score!")
+                f"Your bet has been doubled! Your current balance is: {player.balance}, however the highest score for this user is: {score}! Keep playing to try to beat this score!")
 
     elif (not dOver and pOver) or dtotal > ptotal:
         print("You lose!")
@@ -130,5 +140,3 @@ def convert(card):
         card = "King"
 
     return str(card)+" of "+suit
-
-
