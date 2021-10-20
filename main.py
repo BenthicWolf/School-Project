@@ -59,6 +59,8 @@ The dealer's faceup card is the {convert(dealer.Cards[0])}""")
     pOver = not Choice(player)
     if not pOver:
         dOver = not dealer_turn(dealer)
+    else:
+        dOver = False
 
     settle(player, dealer, pOver, dOver)
 
