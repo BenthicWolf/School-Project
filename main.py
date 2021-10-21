@@ -1,4 +1,7 @@
-from functions import dealer_turn, userauth, Deal_Cards, Choice, convert, settle
+import sys
+
+from random import randint
+from functions import dealer_turn, userauth, Choice, convert, settle
 
 
 class Person:
@@ -6,7 +9,8 @@ class Person:
         self.Cards = []
         self.bet = 0
         self.balance = 100
-        self.name = ""
+        self.Uname = None
+        self.Upass = None
 
     def discard_hand(self):
         self.Cards = []
@@ -28,21 +32,25 @@ class Person:
             total += card
         print(total)
         return total
+    
+    def Deal_Cards(self):
+        self.Cards.append(randint(1, 52))
+        self.Cards.append(randint(1, 52))
 
 
 def main():
 
-    print(player.balance)
+    if player.Uname is None:
+        while not userauth(player):
+            pass
 
-    while not userauth(player):
-        pass
-
-    Deal_Cards(player)
-    Deal_Cards(dealer)
+    player.Deal_Cards()
+    dealer.Deal_Cards()
 
     print(
         f"""Your cards are the {convert(player.Cards[0])}, and the {convert(player.Cards[1])}.
 The dealer's faceup card is the {convert(dealer.Cards[0])}""")
+    print(f"Your current balance is: {player.balance}")
 
     while True:
         bet = int(input("Enter a bet amount: "))
@@ -63,6 +71,10 @@ The dealer's faceup card is the {convert(dealer.Cards[0])}""")
         dOver = False
 
     settle(player, dealer, pOver, dOver)
+
+    if player.balance == 0:
+        print("You have lost all your money, as such this game instance will end. However, player balances are reset upon log in, but don't let that make you forgot your shame.")
+        sys.exit()
 
 
 
