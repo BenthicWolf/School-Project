@@ -3,28 +3,28 @@ from random import randint
 
 
 def userauth(player):
-    global Uname
-    global Upass
     print("Please login to an authorised user account.\n")
-    Uname = str(input("Input a valid username here: "))
-    Upass = str(input("Input a valid password here: "))
+    player.Uname = str(input("Input a valid username here: "))
+    player.Upass = str(input("Input a valid password here: "))
 
-    Valid_Users = open("Users.txt", "r")
+    Uname = player.Uname
+    Upass = player.Upass
 
-    if f"{Uname} : {Upass}\n" in Valid_Users.read():
+    File = open("Users.json", "r")
+    Valid_Users = json.load(File)
+
+    if Uname in Valid_Users.keys() and Valid_Users[Uname] == Upass:
         print("\nSuccessfuly authorised user account\n\n")
-        Valid_Users.close()
+        File.close()
         player.name = Uname
         return True
     else:
         print("\nFailure to authorise user account\n\n")
-        Valid_Users.close()
+        File.close()
         return False
 
 
-def Deal_Cards(player):
-    player.Cards.append(randint(1, 52))
-    player.Cards.append(randint(1, 52))
+
 
 # True means player stuck, False means player went over
 def Choice(player): 
@@ -80,6 +80,7 @@ def dealer_turn(dealer):
 def settle(player, dealer, pOver, dOver):
     ptotal = player.total()
     dtotal = dealer.total()
+    Uname = player.Uname
 
     if (dOver or ptotal > dtotal) and not pOver:
         print("Congratulations, you win!")
@@ -87,21 +88,23 @@ def settle(player, dealer, pOver, dOver):
         File = open("Score.json", "r")
         scores = json.load(File)
         score = scores[Uname]
-        print(score)
+        File.close()
         #int(File.read().split(f"{player.name} : ")[1].split('\n')[0]) # witchcraft
 
         player.balance += (player.bet)*2
-        scores[Uname] = player.balance
-        print(player.balance)
-        file = open("player_data.json", "w")
-        json.dump(player_data, file)
-        file.close()File.close()
+
+        file = open("Score.json", "w")
+        json.dump(scores, file)
+        
 
         if score < player.balance:
+            scores[Uname] = player.balance
+            file.close()
             print(
                 f"Your bet has been doubled! Your current balance is: {player.balance}, this beats highest score for this user, which is: {score}! Keep playing if you want to further this record!")
 
         elif score >= player.balance:
+            file.close()
             print(
                 f"Your bet has been doubled! Your current balance is: {player.balance}, however the highest score for this user is: {score}! Keep playing to try to beat this score!")
 
