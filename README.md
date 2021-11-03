@@ -7,17 +7,17 @@
 
 #### Games:
 
-snake, 
-tic-tac-toe, 
-blackjack
+Snake, 
+Tic-Tac-Toe, 
+Blackjack
 
 #### Interfacing:
 
-banking, 
-computer
+Banking, 
+Computer
 
 ## The Game
-The game I decided to use was blackjack.  
+The game I decided to use was blackjack, however I also used elements of Json.  
 The language I used was python, and the code is meant to be fully object orientated.  
 
 
