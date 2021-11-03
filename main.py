@@ -3,7 +3,6 @@ import sys
 from random import randint
 from functions import dealer_turn, userauth, Choice, convert, settle
 
-
 class Person:
     def __init__(self):
         self.Cards = []
@@ -34,57 +33,69 @@ class Person:
         return total
     
     def Deal_Cards(self):
+        self.Get_Card()
+        self.Get_Card()
+
+    def Get_Card(self):
         self.Cards.append(randint(1, 52))
-        self.Cards.append(randint(1, 52))
 
+class Game:
+    def __init__(self):
+        self.player = Person()
+        self.dealer = Person()
 
-def main():
+        print("\n\nYou are playing: Blackjack (21)\n")
 
-    if player.Uname is None:
-        while not userauth(player):
-            pass
+        if self.player.Uname is None:
+         while not userauth(self.player):
+                pass
+        
+        self.player.Deal_Cards()
+        self.dealer.Deal_Cards()
+    
+    def bet_amount(self):
+        while True:
+            bet = int(input("Enter a bet amount: "))
 
-    player.Deal_Cards()
-    dealer.Deal_Cards()
+            if bet > self.player.balance:
+                print("That is not a valid bet amount\n")
+            else:
+                self.player.bet = bet
+                self.player.balance -= bet
+                print(
+                    f"Bet of {bet} added, an equal amount has been  removed from your balance")
+                break
+    
+    def run(self):
+        while not self.main():
+            print("\n\nNew Game Launched\n\n")
+            self.player.discard_hand()
+            self.dealer.discard_hand()
 
-    print(
-        f"""Your cards are the {convert(player.Cards[0])}, and the {convert(player.Cards[1])}.
-The dealer's faceup card is the {convert(dealer.Cards[0])}""")
-    print(f"Your current balance is: {player.balance}")
+    def print_cards(self):
+        print(f"""Your cards are the {convert(self.player.Cards[0])}, and the {convert(self.player.Cards[1])}.
+    The dealer's faceup card is the {convert(self.dealer.Cards[0])}""")
+        print(f"Your current balance is: {self.player.balance}")
 
-    while True:
-        bet = int(input("Enter a bet amount: "))
+    def main(self):
 
-        if bet > player.balance:
-            print("That is not a valid bet amount\n")
+        self.print_cards()
+
+        game.bet_amount()
+
+        pOver = not Choice(self.player)
+        if not pOver:
+            dOver = not dealer_turn(self.dealer)
         else:
-            player.bet = bet
-            player.balance -= bet
-            print(
-                f"Bet of {bet} added, an equal amount has been removed from your balance")
-            break
+            dOver = False
 
-    pOver = not Choice(player)
-    if not pOver:
-        dOver = not dealer_turn(dealer)
-    else:
-        dOver = False
+        settle(self.player, self.dealer, pOver, dOver)
 
-    settle(player, dealer, pOver, dOver)
-
-    if player.balance == 0:
-        print("You have lost all your money, as such this game instance will end. However, player balances are reset upon log in, but don't let that make you forgot your shame.")
-        sys.exit()
+        if game.player.balance == 0:
+            print("You have lost all your money, as such this game instance will end. However, player balances are reset upon log in, but don't let that make you forgot your shame.")
+            sys.exit()
 
 
+game = Game()
+game.run()
 
-player = Person()
-dealer = Person()
-
-
-print("\n\nYou are playing: Blackjack (21)\n")
-
-while not main():
-    print("\n\nNew Game Launched\n\n")
-    player.discard_hand()
-    dealer.discard_hand()
