@@ -10,7 +10,7 @@ def userauth(player):
     Uname = player.Uname
     Upass = player.Upass
 
-    File = open("Users.json", "r")
+    File = open("users.json", "r")
     Valid_Users = json.load(File)
 
     if Uname in Valid_Users.keys() and Valid_Users[Uname] == Upass:
@@ -24,16 +24,14 @@ def userauth(player):
         return False
 
 
-
-
 # True means player stuck, False means player went over
-def Choice(player): 
+def Choice(player):
     while True:
         print("\nDo you want to hit or stand?")
         decision = str(input("Please enter one of the options: ")).lower()
 
         if decision == "hit":
-            Get_Card(player)
+            player.Get_Card()
             print(f"\nYour new card is: {convert(player.Cards[-1])}")
             if player.total() > 21:
                 print("You're over!")
@@ -46,8 +44,6 @@ def Choice(player):
             print("That isnt an option, please check your spelling\n")
             continue
     return True
-
-
 
 
 def dealer_turn(dealer):
@@ -68,7 +64,7 @@ def dealer_turn(dealer):
             break
 
         else:
-            Get_Card(dealer)
+            dealer.Get_Card()
             print(
                 f"\nThe dealer takes a card, their new card is the: {convert(dealer.Cards[-1])}")
             print()
@@ -84,17 +80,16 @@ def settle(player, dealer, pOver, dOver):
     if (dOver or ptotal > dtotal) and not pOver:
         print("Congratulations, you win!")
 
-        File = open("Score.json", "r")
+        File = open("scores.json", "r")
         scores = json.load(File)
         score = scores[Uname]
         File.close()
-        #int(File.read().split(f"{player.name} : ")[1].split('\n')[0]) # witchcraft
+        # int(File.read().split(f"{player.name} : ")[1].split('\n')[0]) # witchcraft
 
         player.balance += (player.bet)*2
 
         file = open("Score.json", "w")
         json.dump(scores, file)
-        
 
         if score < player.balance:
             scores[Uname] = player.balance
@@ -110,14 +105,12 @@ def settle(player, dealer, pOver, dOver):
     elif (not dOver and pOver) or dtotal > ptotal:
         print("You lose!")
         print(
-            f"Your balance hasn't been returned, your current balance is: {player.balance}")            
+            f"Your balance hasn't been returned, your current balance is: {player.balance}")
 
     else:
         player.balance += player.bet
         print(f"""You have the same total as the dealer, so you draw. Your bet has been returned,
         your current balance is:{player.balance}""")
-
-
 
 
 def convert(card):

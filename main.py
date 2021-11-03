@@ -3,6 +3,7 @@ import sys
 from random import randint
 from functions import dealer_turn, userauth, Choice, convert, settle
 
+
 class Person:
     def __init__(self):
         self.Cards = []
@@ -13,15 +14,15 @@ class Person:
 
     def discard_hand(self):
         self.Cards = []
-    
+
     def is_over(self):
         print(f"Your current total is: {self.total()}")
 
         if self.total() > 21:
             return True
         else:
-           return False
-    
+            return False
+
     def total(self):
         total = 0
         for card in self.Cards:
@@ -31,13 +32,14 @@ class Person:
             total += card
         print(total)
         return total
-    
+
     def Deal_Cards(self):
         self.Get_Card()
         self.Get_Card()
 
     def Get_Card(self):
         self.Cards.append(randint(1, 52))
+
 
 class Game:
     def __init__(self):
@@ -47,12 +49,9 @@ class Game:
         print("\n\nYou are playing: Blackjack (21)\n")
 
         if self.player.Uname is None:
-         while not userauth(self.player):
+            while not userauth(self.player):
                 pass
-        
-        self.player.Deal_Cards()
-        self.dealer.Deal_Cards()
-    
+
     def bet_amount(self):
         while True:
             bet = int(input("Enter a bet amount: "))
@@ -65,7 +64,7 @@ class Game:
                 print(
                     f"Bet of {bet} added, an equal amount has been  removed from your balance")
                 break
-    
+
     def run(self):
         while not self.main():
             print("\n\nNew Game Launched\n\n")
@@ -78,7 +77,8 @@ class Game:
         print(f"Your current balance is: {self.player.balance}")
 
     def main(self):
-
+        self.player.Deal_Cards()
+        self.dealer.Deal_Cards()
         self.print_cards()
 
         game.bet_amount()
@@ -98,4 +98,3 @@ class Game:
 
 game = Game()
 game.run()
-
