@@ -2,13 +2,18 @@
 # School Project
 
 ## Project Focus: 
+
 ### Ideas:
+
 #### Game:
-snake
-tic-tac-toe
+
+snake, 
+tic-tac-toe, 
 blackjack
+
 #### Interfacing:
-banking
+
+banking, 
 computer
 
 
