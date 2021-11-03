@@ -47,8 +47,7 @@ def Choice(player):
             continue
     return True
 
-def Get_Card(player):
-    player.Cards.append(randint(1, 52))
+
 
 
 def dealer_turn(dealer):
