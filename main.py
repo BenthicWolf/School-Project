@@ -64,15 +64,15 @@ class Person:
         return str(card)+" of "+suit
 
     # True means carry on with code, False means the loop repeats
-    def userauth(self, player):
+    def userauth(self):
         print("Please login to an authorised user account.\n")
-        player.Uname = str(input("Input a valid username here: "))
-        player.Upass = str(input("Input a valid password here: "))
+        self.Uname = str(input("Input a valid username here: "))
+        self.Upass = str(input("Input a valid password here: "))
 
         File = open("users.json", "r")
         Valid_Users = json.load(File)
 
-        if player.Uname in Valid_Users.keys() and Valid_Users[player.Uname] == player.Upass:
+        if self.Uname in Valid_Users.keys() and Valid_Users[self.Uname] == self.Upass:
             print("\nSuccessfuly authorised user account\n\n")
             File.close()
             return True
@@ -90,7 +90,7 @@ class Game:
         print("\n\nYou are playing: Blackjack (21)\n")
 
         if self.player.Uname is None:
-            while not self.player.userauth(self.player):
+            while not self.player.userauth():
                 pass
 
     def bet_amount(self):
