@@ -84,8 +84,8 @@ class Person:
 
 class Game:
     def __init__(self):
-        self.player = Person()
         self.dealer = Person()
+        self.player = Person()
 
         print("\n\nYou are playing: Blackjack (21)\n")
 
@@ -124,30 +124,30 @@ class Game:
 
         game.bet_amount()
 
-        pOver = not self.Choice(self.player)
+        pOver = not self.Choice()
         if not pOver:
-            dOver = not self.dealer_turn(self.dealer)
+            dOver = not self.dealer_turn()
         else:
             dOver = False
 
-        self.settle(game, pOver, dOver)
+        self.settle(pOver, dOver)
 
         if game.player.balance == 0:
             print("You have lost all your money, as such this game instance will end. However, player balances are reset upon log in, but don't let that make you forgot your shame.")
             sys.exit()
 
     # True means player standing, False means player went over
-    def Choice(self, player):
+    def Choice(self):
         while True:
             print("\nDo you want to hit or stand?")
             decision = str(input("Please enter one of the options: ")).lower()
 
             if decision == "hit":
-                player.Get_Card()
+                self.player.Get_Card()
                 print(
-                    f"\nYour new card is: {player.convert(player.Cards[-1])}")
-                print(f"You're new total is: {player.total()}")
-                if player.total() > 21:
+                    f"\nYour new card is: {self.player.convert(self.player.Cards[-1])}")
+                print(f"You're new total is: {self.player.total()}")
+                if self.player.total() > 21:
                     print("You're over!")
                     return False
                 else:
@@ -160,7 +160,8 @@ class Game:
         return True
 
     # True means the dealer's turn is finished, False means the dealer has gone bust
-    def dealer_turn(self, dealer):
+    def dealer_turn(self):
+        dealer = self.dealer
         print(
             f"\nThe dealer reveals their facedown card: {dealer.convert(dealer.Cards[1])}")
 
@@ -184,10 +185,10 @@ class Game:
 
         return True
 
-    def settle(self, game, pOver, dOver):
-        player = game.player
+    def settle(self, pOver, dOver):
+        player = self.player
         ptotal = player.total()
-        dtotal = game.dealer.total()
+        dtotal = self.dealer.total()
 
         if (dOver or ptotal > dtotal) and not pOver:
             print("Congratulations, you win!")
