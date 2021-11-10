@@ -80,6 +80,7 @@ class Person:
             print("\nFailure to authorise user account\n\n")
             File.close()
             return False
+    
 
 
 class Game:
@@ -118,11 +119,22 @@ class Game:
         print(f"Your current balance is: {self.player.balance}")
 
     def main(self):
+        game.bet_amount()
+
         self.player.Deal_Cards()
         self.dealer.Deal_Cards()
         self.print_cards()
 
-        game.bet_amount()
+        #make this a seperate function + thing above
+        if self.player.total() == 21:
+            print(f"Your total gives you a natural 21.")
+            if self.dealer.total() == 21:
+                print(f"The dealer reveals their facedown card as: {self.dealer.Cards[1]}, giving them also a total of 21.")
+                self.settle(False, False)
+                break
+                #return True or False idk which
+            else:
+                print(f"The dealer reveals their facedown card as: {self.dealer.Cards[1]}, giving them a total of {self.dealer.total()}.")
 
         pOver = not self.Choice()
         if not pOver:
