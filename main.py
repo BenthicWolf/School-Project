@@ -81,6 +81,10 @@ class Person:
             File.close()
             return False
     
+    def is_same(self):
+        if self.convert(self.Cards[0]).split(" ")[0] == self.convert(self.Cards[1]).split(" ")[0]:
+            pass
+            #continue from here pls
 
 
 class Game:
@@ -112,41 +116,25 @@ class Game:
             print("\n\nNew Game Launched\n\n")
             self.player.discard_hand()
             self.dealer.discard_hand()
+    
+    def new_hand(self):
+        pass
 
     def print_cards(self):
         print(f"""Your cards are the {self.player.convert(self.player.Cards[0])}, and the {self.player.convert(self.player.Cards[1])}.
     The dealer's faceup card is the {self.dealer.convert(self.dealer.Cards[0])}""")
         print(f"Your current balance is: {self.player.balance}")
 
-    def main(self):
-        game.bet_amount()
-
-        self.player.Deal_Cards()
-        self.dealer.Deal_Cards()
-        self.print_cards()
-
-        #make this a seperate function + thing above
-        if self.player.total() == 21:
+    def is_natural(self, player):
             print(f"Your total gives you a natural 21.")
             if self.dealer.total() == 21:
                 print(f"The dealer reveals their facedown card as: {self.dealer.Cards[1]}, giving them also a total of 21.")
                 self.settle(False, False)
-                break
-                #return True or False idk which
+                
             else:
                 print(f"The dealer reveals their facedown card as: {self.dealer.Cards[1]}, giving them a total of {self.dealer.total()}.")
-
-        pOver = not self.Choice()
-        if not pOver:
-            dOver = not self.dealer_turn()
-        else:
-            dOver = False
-
-        self.settle(pOver, dOver)
-
-        if game.player.balance == 0:
-            print("You have lost all your money, as such this game instance will end. However, player balances are reset upon log in, but don't let that make you forgot your shame.")
-            sys.exit()
+                print("Your bet has been returned, you have been given a bonus of half your bet.")
+                player.balance += (player.bet*1.5)
 
     # True means player standing, False means player went over
     def Choice(self):
@@ -212,17 +200,17 @@ class Game:
 
             player.balance += (player.bet)*2
 
-            file = open("scores.json", "w")
-
             if score < player.balance:
                 scores[player.Uname] = player.balance
+
+                file = open("scores.json", "w")
                 json.dump(scores, file)
                 file.close()
+
                 print(
                     f"Your bet has been doubled! Your current balance is: {player.balance}, this beats highest score for this user, which is: {score}! Keep playing if you want to further this record!")
 
             elif score >= player.balance:
-                file.close()
                 print(
                     f"Your bet has been doubled! Your current balance is: {player.balance}, however the highest score for this user is: {score}! Keep playing to try to beat this score!")
 
@@ -235,6 +223,36 @@ class Game:
             player.balance += player.bet
             print(f"""You have the same total as the dealer, so you draw. Your bet has been returned,
             your current balance is:{player.balance}""")
+
+    def split(self, player):
+        pass
+    
+    def main(self):
+        game.bet_amount()
+
+        self.player.Deal_Cards()
+        self.dealer.Deal_Cards()
+        self.print_cards()
+
+        #make this a seperate function + thing above
+        if self.player.total == 21:
+            self.is_natural(self.player)
+            return None
+        
+        if self.player.is_same() == True
+            split(self.player)
+
+        pOver = not self.Choice()
+        if not pOver:
+            dOver = not self.dealer_turn()
+        else:
+            dOver = False
+
+        self.settle(pOver, dOver)
+
+        if game.player.balance == 0:
+            print("You have lost all your money, as such this game instance will end. However, player balances are reset upon log in, but don't let that make you forgot your shame.")
+            sys.exit()
 
 
 game = Game()
