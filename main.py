@@ -46,6 +46,7 @@ class Person:
         self.Decks[0] = self.Decks[1]
         self.Decks[1] = []
 
+    # Returns the highest value of a given deck under 22, unless the value is absolutely over 21, where it then gives the lowest value over 22
     def total(self, cards):
         counter = 0
         total = [0]
@@ -250,6 +251,7 @@ class Game:
                         f"You're new total is: {self.player.total(self.player.Decks[0])}")
                     if self.player.total(self.player.Decks[0]) > 21:
                         print("You're over!")
+
                         if self.player.Decks[1] != []:
                             print("\nYour first deck has been discarded")
                             self.player.discard_deck()
