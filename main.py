@@ -24,10 +24,12 @@ class Person:
 
     def print_deck(self, deck):
         output = ""
+
         for card in deck[:-1]:
             if card != "":
                 output += self.convert(card) + " and the "
         output += self.convert(deck[-1])
+
         return output
 
     def split(self):
@@ -39,6 +41,7 @@ class Person:
 
         if self.total(self.Cards) > 21:
             return True
+
         else:
             return False
 
@@ -90,6 +93,7 @@ class Person:
 
         if card // 13 > 0:
             suit = suits[(card // 13)]
+
         else:
             suit = suits[0]
 
@@ -121,6 +125,7 @@ class Person:
             print("\nSuccessfuly authorised user account\n\n")
             File.close()
             return True
+
         else:
             print("\nFailure to authorise user account\n\n")
             File.close()
@@ -131,6 +136,7 @@ class Person:
         if self.convert(self.Cards[0]).split(" ")[0] == self.convert(
                 self.Cards[1]).split(" ")[0]:
             return True
+
         else:
             return False
 
@@ -147,6 +153,7 @@ class Person:
 
             if self.total(self.Cards) > 21:
                 pOver = True
+
             else:
                 pOver = False
             break
@@ -172,6 +179,7 @@ class Game:
 
             if bet > self.player.balance:
                 print("That is not a valid bet amount\n")
+
             else:
                 self.player.bet = bet
                 self.player.balance -= bet
@@ -196,6 +204,7 @@ class Game:
 
     def is_natural(self, player):
         print(f"Your total gives you a natural 21.")
+
         if self.dealer.total(self.dealer.Cards) == 21:
             print(
                 f"The dealer reveals their facedown card as: {self.dealer.convert(self.dealer.Cards[1])}, giving them also a total of 21."
@@ -226,13 +235,17 @@ class Game:
                     )
                     print(
                         f"You're new total is: {self.player.total(self.player.Decks[0])}")
+
                     if self.player.total(self.player.Decks[0]) > 21:
                         print("You're over!")
                         return False
+
                     else:
                         print("You're not over!")
+
                 elif decision == "stand":
                     return True
+
                 else:
                     print("That isnt an option, please check your spelling\n")
                     continue
@@ -255,12 +268,16 @@ class Game:
                         if self.player.Decks[1] != []:
                             print("\nYour first deck has been discarded")
                             self.player.discard_deck()
+
                         else:
                             return False
+
                     else:
                         print("You're not over!")
+
                 elif decision == "stand":
                     return True
+
                 else:
                     print("That isnt an option, please check your spelling\n")
                     continue
@@ -270,6 +287,7 @@ class Game:
             "\nThe dealer's faceup card is an ace, do you want to place an insurance bet? Yes or No: ").lower()
         if decision == "no":
             return False
+
         elif decision == "yes":
             while True:
                 print("\nYou can place a side bet that the dealer's facedown card is a ten, up to half the original bet. If it is, your side bet is doubled.")
@@ -278,6 +296,7 @@ class Game:
 
                 if bet > self.player.bet/2 or bet > self.player.balance:
                     print("\nThat is not a valid bet")
+
                 else:
                     self.player.balance -= bet
                     self.player.sidebet = bet
@@ -290,6 +309,7 @@ class Game:
                     "The dealer's total comes to 21. The player wins their insurance bet.")
                 self.player.balance += 2*self.player.sidebet
                 return "Exit"
+
             else:
                 print("\nThe dealer checks their facedown card, it was not a 10.")
                 return True
@@ -369,11 +389,10 @@ class Game:
     def main(self):
         player = self.player
         print(f"Your current balance is: {int(player.balance)}\n")
+
         game.bet_amount()
 
-        # player.Deal_Cards()
-        player.Cards.append(1)
-        player.Cards.append(1)
+        player.Deal_Cards()
         self.dealer.Deal_Cards()
         self.print_cards()
 
@@ -384,14 +403,17 @@ class Game:
         if self.dealer.convert(self.dealer.Cards[0]).split(" ")[0] == "Ace":
             if self.do_insurance() == "Exit":
                 return None
+
             else:
                 pass
 
         if player.is_same() == True:
             print(
                 "\nYour cards are of the same face. If you want, you can split into two decks")
+
             while True:
                 do_split = str(input("Yes or No: ")).lower()
+
                 if do_split == "yes":
                     player.split()
                     print(
@@ -402,6 +424,7 @@ class Game:
                     break
                 else:
                     print("That is not a valid option")
+
         else:
             player.Decks[0] = player.Cards
 
@@ -426,11 +449,13 @@ class Game:
 
                 else:
                     print("That is not a valid option\n")
+
         else:
             pOver = not self.Choice()
 
         if not pOver:
             dOver = not self.dealer_turn()
+
         else:
             dOver = False
 
