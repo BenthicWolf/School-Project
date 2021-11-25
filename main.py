@@ -16,6 +16,7 @@ class Person:
         self.Uname = None
         self.Upass = None
         self.Score = None
+        self.sidebet = 0
 
     def discard_hand(self):
         self.Cards = []
@@ -222,8 +223,34 @@ class Game:
                     print("That isnt an option, please check your spelling\n")
                     continue
 
-    # True means the dealer's turn is finished, False means the dealer has gone bust
+    def do_insurance(self):
+        decision = input("\nThe dealer's faceup card is an ace, do you want to place an insurance bet? Yes or No: ").lower()
+        if decision == "no":
+            return False
+        elif decision == "yes":
+            while True:
+                print("You can place a side bet that the dealer's facedown card is a ten, up to half the original bet. If it is, your side bet is doubled.")
+                bet = int(input(f"You can place a bet up to: {self.player.bet/2}, you have {self.player.balance} available to bet, how much do you want to bet: "))
 
+                if bet > self.player.bet/2 or bet > self.player.balance:
+                    print("That is not a valid bet")
+                else:
+                    self.player.balance -= bet
+                    self.player.sidebet = bet
+                    break
+            
+            
+            if self.dealer.convert(self.dealer.Cards[1]).split(" ")[0] == "10":
+                print(f"The dealer reveals their facedown card: the {self.dealer.convert(self.dealer.Cards[1])}.")
+                print("The dealer's total comes to 21. The player wins their insurance bet.")
+                self.player.balance += 2*self.player.sidebet
+                return "Exit"
+            else:
+                print("The dealer checks their facedown card, it was not a 10.")
+                return True
+                
+
+    # True means the dealer's turn is finished, False means the dealer has gone bust
     def dealer_turn(self):
         dealer = self.dealer
         print(
@@ -298,15 +325,22 @@ class Game:
         print(f"Your current balance is: {self.player.balance}")
         game.bet_amount()
 
-        self.player.Cards.append(3)
-        self.player.Cards.append(3)
-        # self.player.Deal_Cards()
-        self.dealer.Deal_Cards()
+        self.player.Deal_Cards()
+        self.dealer.Cards.append(1)
+        self.dealer.Cards.append(10)
+        #self.dealer.Deal_Cards()
         self.print_cards()
 
         if self.player.total(self.player.Cards) == 21:
             self.is_natural(self.player)
             return None
+
+        if self.dealer.convert(self.dealer.Cards[0]).split(" ")[0] == "Ace":
+            if self.do_insurance() == "Exit":
+                return None
+            else:
+                pass
+
 
         if self.player.is_same() == True:
             print(
