@@ -3,11 +3,13 @@ import json
 
 from random import randint
 
-
+# This is a list of values that would allow for doubling-down.
 doubles = [9, 10, 11]
 
-
+# This is the class that contains player variables and functions that only act on 1 player.any
 class Person:
+    
+    # This declares all the variables permanently used.
     def __init__(self):
         self.Cards = []
         self.Decks = [[], []]
@@ -18,10 +20,12 @@ class Person:
         self.Score = None
         self.sidebet = 0
 
+    # This discards a player's hand/s.
     def discard_hand(self):
         self.Cards = []
         self.Decks = [[], []]
 
+    # This prints an entire deck of cards as text.
     def print_deck(self, deck):
         output = ""
 
@@ -32,10 +36,12 @@ class Person:
 
         return output
 
+    # This splits a single hand with 2 aces into two hands.
     def split(self):
         self.Decks[0] = [self.Cards[0]]
         self.Decks[1] = [self.Cards[1]]
 
+    # This checks if a player is over 21.
     def is_over(self):
         print(f"Your current total is: {self.total(self.Cards)}")
 
@@ -45,11 +51,12 @@ class Person:
         else:
             return False
 
+    # This discards all cards in a hands
     def discard_deck(self):
         self.Decks[0] = self.Decks[1]
         self.Decks[1] = []
 
-    # Returns the highest value of a given deck under 22, unless the value is absolutely over 21, where it then gives the lowest value over 22
+    # Returns the highest value of a given deck under 22, unless the value is absolutely over 21, where it then gives the lowest value over 22. This returns the total value of a deck of cards.
     def total(self, cards):
         counter = 0
         total = [0]
@@ -61,7 +68,7 @@ class Person:
 
             if card == 1:
                 total.append(total[-1])
-
+  
                 for i in total[:-1]:
                     total[counter] += 1
                     counter += 1
@@ -80,13 +87,16 @@ class Person:
 
         return total[0]
 
+    # This deals 2 cards to a player at the start of the game.
     def Deal_Cards(self):
         self.Get_Card(self.Cards)
         self.Get_Card(self.Cards)
 
+    # This adds a card (number) to a list of numbers (a hand).
     def Get_Card(self, cards):
         cards.append(randint(1, 52))
 
+    # This takes a card (number) input and outputs the corresponding card out of 52.
     def convert(self, card):
         card -= 1
         suits = ["Diamonds", "Hearts", "Spades", "Clubs"]
@@ -111,7 +121,7 @@ class Person:
 
         return str(card) + " of " + suit
 
-    # True means carry on with code, False means the loop repeats
+    # True means carry on with code, False means the loop repeats. This handles the user login.
     def userauth(self):
         print("Please login to an authorised user account.\n")
         self.Uname = str(input("Input a valid username here: "))
@@ -131,7 +141,7 @@ class Person:
             File.close()
             return False
 
-    # Returns True if face value is the same
+    # Returns True if face value is the same. This checks whether or not a player's two first cards are equal in value.
     def is_same(self):
         if self.convert(self.Cards[0]).split(" ")[0] == self.convert(
                 self.Cards[1]).split(" ")[0]:
@@ -140,6 +150,7 @@ class Person:
         else:
             return False
 
+    # This handles if the player wants to double down.
     def double_down(self):
         global pOver
 
@@ -159,10 +170,12 @@ class Person:
             break
 
 
-# Game class starts
 
 
+# This is the Game class and contains functions and variables relative to the game.
 class Game:
+
+    # This declares all the variables permanently used.
     def __init__(self):
         self.dealer = Person()
         self.player = Person()
@@ -172,7 +185,8 @@ class Game:
         if self.player.Uname is None:
             while not self.player.userauth():
                 pass
-
+    
+    # This asks the user how much they want to bet.
     def bet_amount(self):
         while True:
             bet = int(input("Enter a bet amount: "))
@@ -188,20 +202,20 @@ class Game:
                 )
                 break
 
+    # This runs the main function and resets the player's hands.
     def run(self):
         while not self.main():
             print("\n\nNew Game Launched\n\n")
             self.player.discard_hand()
             self.dealer.discard_hand()
 
-    def new_hand(self):
-        pass
-
+    # This prints all faceups cards at the beginning of the game.
     def print_cards(self):
         print(
             f"""\nYour cards are the {self.player.convert(self.player.Cards[0])}, and the {self.player.convert(self.player.Cards[1])}. The dealer's faceup card is the {self.dealer.convert(self.dealer.Cards[0])}"""
         )
 
+    # This handles if the player has a natural 21.
     def is_natural(self, player):
         print(f"Your total gives you a natural 21.")
 
@@ -220,7 +234,7 @@ class Game:
             )
             player.balance += (player.bet * 1.5)
 
-    # True means player standing, False means player went over
+    # True means player standing, False means player went over. This asks the player if they want to take new cards, or stand, or if they're over.
     def Choice(self):
         while True:
             if self.player.Decks[1] == []:
@@ -282,6 +296,7 @@ class Game:
                     print("That isnt an option, please check your spelling\n")
                     continue
 
+    # This handles whether the user wants to place an insurance bet
     def do_insurance(self):
         decision = input(
             "\nThe dealer's faceup card is an ace, do you want to place an insurance bet? Yes or No: ").lower()
@@ -314,8 +329,7 @@ class Game:
                 print("\nThe dealer checks their facedown card, it was not a 10.")
                 return True
 
-    # True means the dealer's turn is finished, False means the dealer has gone bust
-
+    # True means the dealer's turn is finished, False means the dealer has gone bust. This players out the dealer's turn.
     def dealer_turn(self):
         dealer = self.dealer
         print(
@@ -343,6 +357,7 @@ class Game:
 
         return True
 
+    # This function takes pOver (whether or not player is Over) and dOver (whether or not the dealer is Over) and returns who has one, or not, and how much the player gets.
     def settle(self, pOver, dOver):
         player = self.player
         ptotal = player.total(player.Decks[0])
@@ -371,7 +386,7 @@ class Game:
 
             elif score >= player.balance:
                 print(
-                    f"Your bet has been doubled! Your current balance is: {int(player.balance)}, however the highest score for this user is: {score}! Keep playing to try to beat this score!"
+                    f"Your bet has been doubled! Your current balance is: {int(player.balance)}, however the score for this user is: {score}! Keep playing to try to beat this score!"
                 )
 
         elif (not dOver and pOver) or dtotal > ptotal:
@@ -386,6 +401,7 @@ class Game:
                 f"""You have the same total as the dealer, so you draw. Your bet has been returned,
             your current balance is:{int(player.balance)}""")
 
+    # This is the main function where the main sequence of checks and fucntions are run
     def main(self):
         player = self.player
         print(f"Your current balance is: {int(player.balance)}\n")
@@ -422,6 +438,7 @@ class Game:
                 elif do_split == "no":
                     print("\nDeck not split\n")
                     break
+
                 else:
                     print("That is not a valid option")
 
