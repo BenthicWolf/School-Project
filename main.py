@@ -61,11 +61,18 @@ class Person:
         counter = 0
         total = [0]
 
+        # This for loop runs through and sums all card values
         for card in cards:
-            card -= ((card - 1) // 13) * 13
+            # This removes as many 13's as possible without reaching 0, in order to find the card value
+            card = card-1 % 13
+            # All picture cards become 10
             if card > 10:
                 card = 10
 
+            # This deals with aces either being 1 or 11 by adding a value of a list where 11 has been
+            # added, while all previous values are added by 1. 
+            # This means you obtain an ordered list of 
+            # all possible values from smallest to biggest
             if card == 1:
                 total.append(total[-1])
   
@@ -75,16 +82,20 @@ class Person:
                 total[-1] += 11
                 counter = 0
 
+            # This adds the card value to each possible total value
             else:
                 for i in total:
                     total[counter] += card
                     counter += 1
                 counter = 0
 
+        # This runs through the list of possible values backwards (largest->smallest)
+        # and returns the greatest value < 22.
         for i in total[::-1]:
             if i <= 21:
                 return total[total.index(i)]
 
+        # If all values are over 21, the lowest total is returned
         return total[0]
 
     # This deals 2 cards to a player at the start of the game.
@@ -107,7 +118,7 @@ class Person:
         else:
             suit = suits[0]
 
-        card -= (card // 13) * 13
+        card = card % 13
         card += 1
 
         if card == 1:
@@ -127,9 +138,11 @@ class Person:
         self.Uname = str(input("Input a valid username here: "))
         self.Upass = str(input("Input a valid password here: "))
 
+        # Opens external file users.json and writes it to a function "Valid_Users"
         File = open("users.json", "r")
         Valid_Users = json.load(File)
 
+        # Checks if the username and password match a pair in users.json
         if self.Uname in Valid_Users.keys() and Valid_Users[
                 self.Uname] == self.Upass:
             print("\nSuccessfuly authorised user account\n\n")
@@ -345,6 +358,7 @@ class Game:
                 print("The dealer is bust")
                 return False
 
+            # Ends dealer turn if their total is > 17 or greater than the player's total. 
             elif total >= 17 or total >= self.player.total(self.player.Decks[0]):
                 break
 
